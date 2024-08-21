@@ -1,0 +1,33 @@
+---
+import type { HTMLTag } from 'astro/types'
+
+enum VariantKey {
+  banner,
+  body,
+}
+
+interface VariantField {
+  styles: string
+  tag: HTMLTag
+}
+
+type Variant = keyof typeof VariantKey
+
+const Variants: Record<Variant, VariantField> = {
+  banner: { styles: 'text-4xl font-bold tracking-tight', tag: 'h1' },
+  body: { styles: 'text-xl', tag: 'p' },
+}
+
+interface Props {
+  variant: Variant
+}
+
+const { variant } = Astro.props
+const { styles, tag: Tag } = Variants[variant]
+
+const strongStyles = '[&>strong]:font-semibold'
+
+const classes = [strongStyles, styles]
+---
+
+<Tag class:list={classes}><slot /></Tag>
